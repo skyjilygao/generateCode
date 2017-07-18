@@ -1,0 +1,65 @@
+<#assign className = table.className>   
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<#macro mapperEl value>${r"#{"}${value}}</#macro>
+<#macro namespace>${basepackage}.dao.${className}.</#macro>
+<mapper namespace="${basepackage}.dao.${className}Mapper">
+
+	<resultMap id="rm" type="${basepackage}.entity.${className}">
+        <#list table.cols as column>
+        <result property="${column.proName}" column="${column.colName}"/>
+		</#list>
+	</resultMap>
+	
+	<sql id="columns">
+	    <![CDATA[
+		<#list table.cols as column>${column.colName}<#if column_has_next>,</#if></#list>
+	    ]]>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="${table.idCol.proName}">
+    <![CDATA[
+        INSERT INTO ${table.table_name} (<#list table.cols as column> ${column.colName} <#if column_has_next>,</#if></#list>) 
+        VALUES (<#list table.cols as column><@mapperEl column.proName/> <#if column_has_next>,</#if></#list>)
+    ]]>
+	</insert>
+	
+	<update id="update" >
+        UPDATE ${table.table_name}
+       	<set>
+	        <#list table.cols as column>
+	        <#if column.colName!=table.idCol.colName>
+	        	<#if column.javaType=='String'>
+		        	<if test="${column.proName} != null and ${column.proName} != ''">
+		        		${column.colName} = <@mapperEl column.proName/> <#if column_has_next>,</#if>
+		        	</if>
+		        <#else>
+		        	<if test="${column.proName} != null">
+		        		${column.colName} = <@mapperEl column.proName/> <#if column_has_next>,</#if>
+		        	</if>
+		        </#if>
+	        </#if>
+	        </#list>
+        </set>
+        WHERE ${table.idCol.colName} = <@mapperEl table.idCol.proName/>
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM ${table.table_name} WHERE
+        ${table.idCol.colName} = <@mapperEl table.idCol.proName/>
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="rm">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM ${table.table_name} 
+	        WHERE ${table.idCol.colName} = <@mapperEl table.idCol.proName/>
+	    ]]>
+	</select>
+
+</mapper>
+
