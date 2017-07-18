@@ -7,10 +7,9 @@ import com.hql.util.Utils;
 
 public class CreateCode {
 
-
+//*********************配置以下关键信息，以生成java Code！*******开始**************************************//
 	final static String tempTable ="u_user";//表
 	final static String outTempDir="tempCode";//输出目录：当前项目下tempCode目录下
-
 
 	final static String templateDir="/template";//模版路径
 	final static String module="user";//模块
@@ -18,6 +17,8 @@ public class CreateCode {
 	final static String user="root";//数据库用户名
 	final static String password="HelloWorld1!";//数据库密码
 	final static String packageBao="com.gao";//生成java文件包名
+//配置完成后，还需要设置模版中目录名称，即各个包名称。如：项目dao的java文件属于com.gao.dao下，请将设置一个包名称为dao
+// *********************配置以下关键信息，以生成java Code！*******开始**************************************//
 
 	public static void main(String[] args) {
 		CreateCode cc = new CreateCode();
