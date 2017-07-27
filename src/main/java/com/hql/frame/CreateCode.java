@@ -13,30 +13,37 @@ public class CreateCode {
 
 	final static String templateDir="/template";//模版路径
 	final static String module="CaseInvstg";//模块
-	final static String DBURL="";
-	final static String DBname="newfahai";//数据库名
+	final static String DB_HOST="218.245.1.224";
+	final static String DB_PORT="3306";
+	final static String DB_NAME ="newfahai";//数据库名
 	final static String user="root";//数据库用户名
 	final static String password="HelloWorld1!";//数据库密码
 	final static String packageBao="com.gao";//生成java文件包名
+
 //配置完成后，还需要设置模版中目录名称，即各个包名称。如：项目dao的java文件属于com.gao.dao下，请将设置一个包名称为dao
 // *********************配置以下关键信息，以生成java Code！*******开始**************************************//
-
+	//在构造方法中拼接
+	static String conURL="";
 	public static void main(String[] args) {
 		CreateCode cc = new CreateCode();
 		cc.create(tempTable,outTempDir);//表,输出目录：当前项目下tempCode目录下
 	}
 
-	public void create(String tables,String outDir){
+	public CreateCode() {
+		this.conURL="jdbc:mysql://"+DB_HOST+":"+DB_PORT+"/"+ DB_NAME +"?useUnicode=true&amp;characterEncoding=UTF-8";
+	}
+
+	public void create(String tables, String outDir){
 
 		try {
 			System.out.println("生成代码开始");
 			SqlBean sql = SqlBean.getInstance();
 			System.out.println("设置参数");
 			sql.setDatabaseDriver("com.mysql.jdbc.Driver");
-			sql.setConUrl("jdbc:mysql://218.245.1.224:3306/"+DBname+"?useUnicode=true&amp;characterEncoding=UTF-8");
+			sql.setConUrl(conURL);
 			sql.setUserName(user);
 			sql.setPassword(password);
-			sql.setDb(DBname);
+			sql.setDb(DB_NAME);
 			if(Utils.isNull(tables)){
 				throw new Exception("表名不能空!");
 			}
