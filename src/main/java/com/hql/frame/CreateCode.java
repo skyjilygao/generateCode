@@ -8,12 +8,13 @@ import com.hql.util.Utils;
 public class CreateCode {
 
 //*********************配置以下关键信息，以生成java Code！*******开始**************************************//
-	final static String tempTable ="u_user";//表
+	final static String tempTable ="case_invstg";//表
 	final static String outTempDir="tempCode";//输出目录：当前项目下tempCode目录下
 
 	final static String templateDir="/template";//模版路径
-	final static String module="user";//模块
-	final static String DBname="userMgt";//数据库名
+	final static String module="CaseInvstg";//模块
+	final static String DBURL="";
+	final static String DBname="newfahai";//数据库名
 	final static String user="root";//数据库用户名
 	final static String password="HelloWorld1!";//数据库密码
 	final static String packageBao="com.gao";//生成java文件包名
@@ -32,7 +33,7 @@ public class CreateCode {
 			SqlBean sql = SqlBean.getInstance();
 			System.out.println("设置参数");
 			sql.setDatabaseDriver("com.mysql.jdbc.Driver");
-			sql.setConUrl("jdbc:mysql://127.0.0.1:3306/"+DBname+"?useUnicode=true&amp;characterEncoding=UTF-8");
+			sql.setConUrl("jdbc:mysql://218.245.1.224:3306/"+DBname+"?useUnicode=true&amp;characterEncoding=UTF-8");
 			sql.setUserName(user);
 			sql.setPassword(password);
 			sql.setDb(DBname);
