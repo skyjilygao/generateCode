@@ -99,6 +99,7 @@ public class TableFactory {
 					field = new Column();
 					field.setColName(rs.getString("COLUMN_NAME"));
 					String name = field.getColName();
+					name = name.toLowerCase(); // 如果字段中有大写，一律改成小写
 					while (name.indexOf("_") > 0) {
 						int index = name.indexOf("_");
 						name = name.subSequence(0, index)

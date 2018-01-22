@@ -45,6 +45,9 @@ public class Column implements Serializable {
 		return proName.substring(0, 1).toUpperCase()+proName.substring(1);
 	}
 
+	public String getLowerCaseProName(){
+		return proName.toLowerCase();
+	}
 	public void setProName(String proName) {
 		this.proName = proName;
 	}
