@@ -9,23 +9,31 @@ public class CreateCode {
 
 //*********************配置以下关键信息，以生成java Code！*******开始**************************************//
 	// 只需写表名，数据库连接信息
-    final static String tempTable ="ads_conversion_specs";//表
-
-	final static String DB_HOST="192.168.88.89";
-	final static String DB_PORT="3306";
-	final static String DB_NAME ="fbads";//数据库名
-	final static String user="user-admin";//数据库用户名
-	final static String password="ceshi";//数据库密码
-	final static String packageBao="com.adorado.fbads";//生成java文件包名
+     static String tempTable ="aw_authtoken";//表
+//fb_ad_activity, fb_ad_creative, fb_ad_place_page_sets
+	// 哪个DB
+	final static int whichDBConUrl = 1; // 1:mysql; 2:pssql
+	final static String DB_HOST="192.168.88.91";
+	final static String DB_PORT="3306"; // mysql:3306 pgsql:5432
+	final static String DB_NAME ="awreports";//数据库名
+	final static String user="root";//数据库用户名 mysql:user-admi pgsql:postgres
+	final static String password="123456";//数据库密码 mysql:ceshi pgsql:123456
+	final static String packageBao="com.powerwin.adorado";//生成java文件包名
 	final static String outTempDir="tempCode";//输出目录：当前项目下tempCode目录下
 	final static String templateDir="/template";//模版路径
+	// 以下无需写，会根据 whichDBConUrl值 判断
+	static String DB_DRIVER = "com.mysql.jdbc.Driver"; // mysql:com.mysql.jdbc.Driver pgsql:org.postgresql.Driver
 	static String module="adsConversionSpecs";//模块.无需指定，main中根据表名自动替换下划线，大写处理
-
 //配置完成后，还需要设置模版中目录名称，即各个包名称。如：项目dao的java文件属于com.gao.dao下，请将设置一个包名称为dao
 // *********************配置以下关键信息，以生成java Code！*******开始**************************************//
 	//在构造方法中拼接
 	static String conURL="";
 	public static void main(String[] args) {
+//		String a = "insights_adaccount_cost_per_unique_action_type, insights_adaccount_cost_per_unique_outbound_click, insights_adaccount_outbound_clicks, insights_adaccount_outbound_clicks_ctr, insights_adaccount_relevance_score, insights_adaccount_unique_actions, insights_adaccount_unique_outbound_clicks";
+//		String[] tables = a.split(",");
+//		for(String aa:tables){
+//			tempTable = aa;
+//		}
 		CreateCode cc = new CreateCode();
         cc.generateModule();
 		cc.create(tempTable,outTempDir);//表,输出目录：当前项目下tempCode目录下
@@ -39,7 +47,23 @@ public class CreateCode {
         System.out.println("表名："+tempTable +", 实体名："+module);
     }
 	public CreateCode() {
-		conURL="jdbc:mysql://"+DB_HOST+":"+DB_PORT+"/"+ DB_NAME +"?useUnicode=true&amp;characterEncoding=UTF-8";
+		switch(whichDBConUrl){
+			// mysql
+			case 1:
+				conURL="jdbc:mysql://"+DB_HOST+":"+DB_PORT+"/"+ DB_NAME +"?useUnicode=true&amp;characterEncoding=UTF-8";
+				DB_DRIVER = "com.mysql.jdbc.Driver";
+				break;
+			// postgreSql
+			case 2:
+				// pgsql
+				conURL="jdbc:postgresql://"+DB_HOST+":"+DB_PORT+"/"+ DB_NAME +"";
+				break;
+			// default: use mysql db
+			default:
+				conURL="jdbc:mysql://"+DB_HOST+":"+DB_PORT+"/"+ DB_NAME +"?useUnicode=true&amp;characterEncoding=UTF-8";
+		}
+
+
 	}
 
 	public void create(String tables, String outDir){
@@ -48,7 +72,7 @@ public class CreateCode {
 			System.out.println("生成代码开始");
 			SqlBean sql = SqlBean.getInstance();
 			System.out.println("设置参数");
-			sql.setDatabaseDriver("com.mysql.jdbc.Driver");
+			sql.setDatabaseDriver(DB_DRIVER);
 			sql.setConUrl(conURL);
 			sql.setUserName(user);
 			sql.setPassword(password);
@@ -56,7 +80,7 @@ public class CreateCode {
 			if(Utils.isNull(tables)){
 				throw new Exception("表名不能空!");
 			}
-			Utils.deleteDir(outDir);
+			//Utils.deleteDir(outDir);
 			TableFactory.getDefault().getCurrentAllTalbesStatus(sql,tables);
 			if (!Utils.isNull(outDir)) {
 				FreemarkerFactory ff = FreemarkerFactory.getDefault();

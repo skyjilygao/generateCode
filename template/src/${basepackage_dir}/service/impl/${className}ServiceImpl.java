@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ${basepackage}.dao.${className}Mapper;
-import ${basepackage}.api.${className}Service;
+import ${basepackage}.service.${className}Service;
 
 @Service(value="${table.lowerClassName}Service")
 public class ${className}ServiceImpl implements ${className}Service {

@@ -17,11 +17,11 @@ public class ${className} implements java.io.Serializable{
 		return this.${column.proName};
 	}
 
-	<#if column.javaType=='Date'>
-	public String get${column.upFirstProName}Str() {
-		return DateUtils.dTS(this.${column.proName},DateUtils.dt);
-	}
+//	<#if column.javaType=='Date'>
+//	public String get${column.upFirstProName}Str() {
+//		return DateUtils.dTS(this.${column.proName},DateUtils.dt);
+//	}
 	
-	</#if>
+	//</#if>
 </#list>
 }

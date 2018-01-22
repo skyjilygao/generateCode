@@ -28,6 +28,13 @@
             <artifactId>jcl-over-slf4j</artifactId>
             <version>1.6.1</version>
         </dependency>-->
+        <!-- postgresql驱动包 -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1209</version>
+        </dependency>
+        <!-- mysql驱动包 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

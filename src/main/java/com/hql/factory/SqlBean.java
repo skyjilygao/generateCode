@@ -88,9 +88,11 @@ public class SqlBean {
 	public ResultSet executeQuery(String sql) {
 		rs = null;
 		try {
+			System.out.println(sql);
 			Statement stmt = getConnection().createStatement();
 			rs = stmt.executeQuery(sql);
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 			System.out.println("执行查询出现问题： " + ex.getMessage());
 		}
 		return rs;
