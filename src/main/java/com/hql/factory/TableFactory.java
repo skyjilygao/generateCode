@@ -99,7 +99,32 @@ public class TableFactory {
 					field = new Column();
 					field.setColName(rs.getString("COLUMN_NAME"));
 					String name = field.getColName();
-					name = name.toLowerCase(); // 如果字段中有大写，一律改成小写
+					if(name.indexOf("_") < 0){
+						int i = 0;
+						Map<Boolean, Integer> upOrlowCase = new HashMap<Boolean, Integer>();
+						boolean isAllUpperCase=true;
+						int u=0;
+						int l=0;
+						upOrlowCase.put(true,u);
+						upOrlowCase.put(false,l);
+						while(i < name.length()){
+							char chr = name.charAt(i);
+							if(Character.isUpperCase(chr)){
+								upOrlowCase.put(true,++u);
+							}else if(Character.isLowerCase(chr)){
+								upOrlowCase.put(false,++l);
+								break;
+							}
+							i++;
+						}
+						if(upOrlowCase.get(true) == name.length()){
+							name = name.toLowerCase();
+						}else {
+							name = name.substring(0,1).toLowerCase() + name.substring(1);
+						}
+					}else {
+						name = name.toLowerCase(); // 如果字段中有大写，一律改成小写
+					}
 					while (name.indexOf("_") > 0) {
 						int index = name.indexOf("_");
 						name = name.subSequence(0, index)

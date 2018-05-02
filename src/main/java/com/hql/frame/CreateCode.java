@@ -4,26 +4,37 @@ import com.hql.factory.SqlBean;
 import com.hql.factory.TableFactory;
 import com.hql.freemarker.FreemarkerFactory;
 import com.hql.util.Utils;
+import com.mysql.jdbc.StringUtils;
 
 public class CreateCode {
 
 //*********************配置以下关键信息，以生成java Code！*******开始**************************************//
 	// 只需写表名，数据库连接信息
-     static String tempTable ="aw_authtoken";//表
+     static String tempTable ="fb_account_token";//表
 //fb_ad_activity, fb_ad_creative, fb_ad_place_page_sets
 	// 哪个DB
-	final static int whichDBConUrl = 1; // 1:mysql; 2:pssql
-	final static String DB_HOST="192.168.88.91";
-	final static String DB_PORT="3306"; // mysql:3306 pgsql:5432
-	final static String DB_NAME ="awreports";//数据库名
-	final static String user="root";//数据库用户名 mysql:user-admi pgsql:postgres
-	final static String password="123456";//数据库密码 mysql:ceshi pgsql:123456
-	final static String packageBao="com.powerwin.adorado";//生成java文件包名
+	final static int whichDBConUrl = 1; // 1:mysql; 2:postgreqSql
+	/**
+	 * 线上：47.88.193.190
+	 * test：192.168.88.89 / 3306 / user-admin / ceshi
+	 */
+	final static String DB_HOST="192.168.88.89";
+	final static String DB_PORT="3306"; // mysql:3306 postgreqSql:5432
+
+	final static String DB_NAME ="fbads";//数据库名
+	final static String user="user-admin";//数据库用户名 mysql:user-admin pgsql:postgres
+	final static String password="ceshi";//数据库密码 mysql:ceshi pgsql:123456
+	final static String packageBao="com.powerwin.adorado.fbads";//生成java文件包名
 	final static String outTempDir="tempCode";//输出目录：当前项目下tempCode目录下
 	final static String templateDir="/template";//模版路径
 	// 以下无需写，会根据 whichDBConUrl值 判断
 	static String DB_DRIVER = "com.mysql.jdbc.Driver"; // mysql:com.mysql.jdbc.Driver pgsql:org.postgresql.Driver
-	static String module="adsConversionSpecs";//模块.无需指定，main中根据表名自动替换下划线，大写处理
+	/**
+	 * 模块.
+	 * 为空，一般无需指定，main中根据表名自动替换下划线，大写处理
+	 * 如果不为空，就使用指定的名称
+	 */
+	static String module="";
 //配置完成后，还需要设置模版中目录名称，即各个包名称。如：项目dao的java文件属于com.gao.dao下，请将设置一个包名称为dao
 // *********************配置以下关键信息，以生成java Code！*******开始**************************************//
 	//在构造方法中拼接
@@ -39,11 +50,13 @@ public class CreateCode {
 		cc.create(tempTable,outTempDir);//表,输出目录：当前项目下tempCode目录下
 	}
     public void generateModule(){
-        module = tempTable;
-        while (module.indexOf("_") > -1) {
-            String s1 = module.substring(module.indexOf("_")+1, module.indexOf("_")+2);
-            module = module.replaceFirst(module.substring(module.indexOf("_"), module.indexOf("_")+2), s1.toUpperCase());
-        }
+		if (StringUtils.isNullOrEmpty(module)) {
+			module = tempTable;
+			while (module.indexOf("_") > -1) {
+				String s1 = module.substring(module.indexOf("_")+1, module.indexOf("_")+2);
+				module = module.replaceFirst(module.substring(module.indexOf("_"), module.indexOf("_")+2), s1.toUpperCase());
+			}
+		}
         System.out.println("表名："+tempTable +", 实体名："+module);
     }
 	public CreateCode() {
